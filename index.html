@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR" data-bs-theme="dark">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Inicia chats do WhatsApp instantemente após adicionar um número de telefone. Um modo rápido, simples e eficiente para iniciar conversas.">
+  <meta name="description"
+    content="Inicia chats do WhatsApp instantemente após adicionar um número de telefone. Um modo rápido, simples e eficiente para iniciar conversas.">
   <meta name="author" content="Zapwebsites">
   <title>WhatsApp Launcher</title>
   <!-- Bootstrap -->
@@ -33,7 +35,50 @@
     </button>
     <div id="msg" class="text-body-secondary small mt-3"></div>
   </div>
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="installToast" class="toast align-items-center text-bg-dark border-0" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">
+          📲 Instale este app para acesso rápido
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-light me-2 m-auto" id="installAction">
+          Instalar
+        </button>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  </div>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    let deferredPrompt;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+
+      const toastEl = document.getElementById('installToast');
+      const toast = new bootstrap.Toast(toastEl, {
+        delay: 10000 // auto fecha em 10s
+      });
+
+      toast.show();
+
+      document.getElementById('installAction').onclick = async () => {
+        toast.hide();
+
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+
+          const { outcome } = await deferredPrompt.userChoice;
+
+          if (outcome === 'accepted') {
+            console.log('PWA instalado');
+          }
+          deferredPrompt = null;
+        }
+      };
+    });
     const input = document.getElementById('telefone');
     const msg = document.getElementById('msg');
 
