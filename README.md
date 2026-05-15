@@ -54,8 +54,13 @@ Comportamento automático:
 /whatsapp-launcher
   ├── index.html
   ├── manifest.json
-  ├── sw.js
-  └── icons/(several files)
+  ├── js/
+  │     └── app.js
+  │     └── sw.js
+  ├── icons/
+  │     └── ...
+  ├── LICENSE
+  └── README.md
 ```
 
 ## 🛠️ Rodando localmente
