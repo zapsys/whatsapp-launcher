@@ -2,8 +2,10 @@
   "name": "WhatsApp Launcher",
   "short_name": "WA Launcher",
   "start_url": ".",
+  "lang": "pt-BR",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "orientation": "portrait",
+  "background_color": "#121212",
   "theme_color": "#25D366",
   "icons": [
     {
@@ -12,7 +14,7 @@
       "type": "image/png"
     },
     {
-      "src": "icons/log-512x512.png",
+      "src": "icons/logo-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
