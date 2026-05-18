@@ -26,24 +26,44 @@
   <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#121212">
+    <!-- iOS PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="WhatsApp Launcher">
   <!-- Favicon padrão -->
   <link rel="icon" href="icons/favicon.ico" sizes="any">
   <!-- PNGs modernos -->
   <link rel="icon" type="image/png" sizes="192x192" href="icons/logo-192x192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="icons/logo-512x512.png">
-  <!-- iOS -->
+  <!-- iOS icon -->
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
+<style>
+.btn-whatsapp {
+  background: linear-gradient(135deg, #1faa59, #168f4a);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+.btn-whatsapp:hover {
+  background: linear-gradient(135deg, #189e50, #127a3f);
+  transform: translateY(-1px);
+}
+.btn-whatsapp:active {
+  transform: scale(0.98);
+}
+</style>
 <body class="d-flex align-items-center justify-content-center vh-100 bg-body-tertiary">
   <div class="card shadow-lg border-0 rounded-4 p-4 text-center" style="width: 340px;">
     <!-- Ícone corrigido (proporcional) -->
     <div class="mb-3">
-      <img src="icons/whatsapp.svg" alt="WhatsApp" width="64" height="64" class="img-fluid">
+      <img src="icons/whatsapp-launcher.png" alt="WhatsApp" width="96" height="96" class="img-fluid">
     </div>
     <h5 class="fw-semibold mb-1">Iniciar conversa</h5>
     <p class="text-body-secondary small mb-3">Digite o número com DDD</p>
     <input id="telefone" class="form-control form-control-lg text-center" placeholder="(99) 99999-9999">
-    <button id="btnAbrir" class="btn btn-success btn-lg w-100 mt-3">
+    <button id="btnAbrir" class="btn btn-whatsapp btn-lg w-100 mt-3">
       Abrir WhatsApp
     </button>
     <div id="msg" class="text-body-secondary small mt-3"></div>
