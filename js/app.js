@@ -50,10 +50,25 @@ input.addEventListener('input', () => {
   input.value = v;
 });
 // =====================
-// 📱 DETECÇÃO DEVICE
+// 📱 DETECÇÃO DEVICES
 // =====================
-function detectarMobile() {
+function isMobile() {
   return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+function isAndroid() {
+  return /Android/i.test(navigator.userAgent);
+}
+function isiOS() {
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+// =====================
+// 📱 DETECTAR VARIANTES
+// =====================
+function getPreferredWhatsApp() {
+  return localStorage.getItem("wa_variant") || "standard";
+}
+function setPreferredWhatsApp(type) {
+  localStorage.setItem("wa_variant", type);
 }
 // =====================
 // 🚀 ABRIR WHATSAPP
@@ -74,12 +89,34 @@ function abrirWhats() {
   msg.innerText = 'Abrindo...';
 
   const texto = encodeURIComponent("");
+  const variant = getPreferredWhatsApp();
 
-  const url = detectarMobile()
-    ? `https://wa.me/${numero}?text=${texto}`
-    : `https://web.whatsapp.com/send?phone=${numero}&text=${texto}`;
+  const urlWeb = `https://web.whatsapp.com/send?phone=${numero}&text=${texto}`;
+  const urlApp = `https://wa.me/${numero}?text=${texto}`;
 
-  window.open(url, '_blank');
+  if (isMobile()) {
+
+    if (isAndroid()) {
+      const intentPackage = variant === "business"
+        ? "com.whatsapp.w4b"
+        : "com.whatsapp";
+
+      const intentUrl = `intent://send?phone=${numero}&text=${texto}#Intent;scheme=whatsapp;package=${intentPackage};end`;
+
+      window.location.href = intentUrl;
+
+      // fallback para wa.me
+      setTimeout(() => {
+        window.location.href = urlApp;
+      }, 1500);
+    } else if (isiOS()) {
+      // iOS não permite escolher app → usa padrão
+      window.location.href = urlApp;
+    }
+  } else {
+    // Desktop → abre WhatsApp Web
+    window.open(urlWeb, '_blank');
+  }
 }
 // =====================
 // 🎯 EVENTO BOTÃO
