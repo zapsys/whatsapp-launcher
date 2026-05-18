@@ -1,6 +1,6 @@
 {
   "name": "WhatsApp Launcher",
-  "short_name": "WhatsApp Launcher",
+  "short_name": "WA Launcher",
   "icons": [
     {
       "src": "/logo-192x192.png",
@@ -15,7 +15,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#40c451",
-  "background_color": "#3e3e3e",
+  "theme_color": "#121212",
+  "background_color": "#121212",
   "display": "standalone"
 }
