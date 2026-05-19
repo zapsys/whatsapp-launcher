@@ -123,10 +123,32 @@ function abrirWhats() {
 // =====================
 btn.addEventListener('click', abrirWhats);
 
-// =====================
-// ⚙️ SERVICE WORKER
-// =====================
+// ===========================================
+// ⚙️ SERVICE WORKER | 🔄 AUTO UPDATE PWA
+// ===========================================
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('js/sw.js', { scope: '/' })
-        .catch(err => console.error('SW erro:', err));
+  navigator.serviceWorker.register('js/sw.js', { scope: '/' }).then(reg => {
+
+    // Detecta nova versão
+    reg.onupdatefound = () => {
+      const newWorker = reg.installing;
+
+      newWorker.onstatechange = () => {
+        if (newWorker.state === 'installed') {
+
+          if (navigator.serviceWorker.controller) {
+            console.log('Nova versão disponível');
+
+            // força ativação
+            newWorker.postMessage({ type: 'SKIP_WAITING' });
+          }
+        }
+      };
+    };
+  });
+  // Reload automático quando atualizar
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    console.log('Atualizado — recarregando...');
+    window.location.reload();
+  });
 }
