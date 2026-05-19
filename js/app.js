@@ -158,29 +158,23 @@ function abrirWhats() {
   const urlWeb = `https://web.whatsapp.com/send?phone=${numeroFinal}&text=${texto}`;
   const urlApp = `https://wa.me/${numeroFinal}?text=${texto}`;
 
-  if (isMobile()) {
+if (isMobile()) {
 
-    if (isAndroid()) {
-      const intentPackage = variant === "business"
-        ? "com.whatsapp.w4b"
-        : "com.whatsapp";
+  const urlScheme = `whatsapp://send?phone=${numeroFinal}&text=${texto}`;
 
-      const intentUrl = `intent://send?phone=${numeroFinal}&text=${texto}#Intent;scheme=whatsapp;package=${intentPackage};end`;
+  // tenta abrir direto no app (SEM abrir browser)
+  window.location.href = urlScheme;
 
-      window.location.href = intentUrl;
-
-      // fallback para wa.me
-      setTimeout(() => {
-        window.location.href = urlApp;
-      }, 1500);
-    } else if (isiOS()) {
-      // iOS não permite escolher app → usa padrão
+  // fallback leve (sem criar aba invisível agressiva)
+  setTimeout(() => {
+    if (document.visibilityState === 'visible') {
       window.location.href = urlApp;
     }
-  } else {
-    // Desktop → abre WhatsApp Web
-    window.open(urlWeb, '_blank');
-  }
+  }, 1200);
+
+} else {
+  window.open(urlWeb, '_blank');
+}
 }
 // =====================
 // 🎯 EVENTO BOTÃO
