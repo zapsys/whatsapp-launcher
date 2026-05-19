@@ -155,8 +155,8 @@ function abrirWhats() {
   const texto = encodeURIComponent("");
   const variant = getPreferredWhatsApp();
 
-  const urlWeb = `https://web.whatsapp.com/send?phone=${numero}&text=${texto}`;
-  const urlApp = `https://wa.me/${numero}?text=${texto}`;
+  const urlWeb = `https://web.whatsapp.com/send?phone=${numeroFinal}&text=${texto}`;
+  const urlApp = `https://wa.me/${numeroFinal}?text=${texto}`;
 
   if (isMobile()) {
 
@@ -165,7 +165,7 @@ function abrirWhats() {
         ? "com.whatsapp.w4b"
         : "com.whatsapp";
 
-      const intentUrl = `intent://send?phone=${numero}&text=${texto}#Intent;scheme=whatsapp;package=${intentPackage};end`;
+      const intentUrl = `intent://send?phone=${numeroFinal}&text=${texto}#Intent;scheme=whatsapp;package=${intentPackage};end`;
 
       window.location.href = intentUrl;
 
