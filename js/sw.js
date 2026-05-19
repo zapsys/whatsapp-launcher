@@ -56,9 +56,14 @@ self.addEventListener('activate', (event) => {
 // 🌐 FETCH (Cache First)
 // ==========================
 self.addEventListener('fetch', (event) => {
-  // Ignora requests não GET
-  if (event.request.method !== 'GET') return;
+  const url = new URL(event.request.url);
 
+  // 🔥 NÃO intercepta:
+  // - requests não GET
+  // - links externos (WhatsApp, APIs, etc)
+  if (event.request.method !== 'GET' || url.origin !== self.location.origin) {
+    return;
+  }
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
@@ -66,14 +71,20 @@ self.addEventListener('fetch', (event) => {
       }
       return fetch(event.request)
         .then((networkResponse) => {
-          // Atualiza cache dinamicamente
-          return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, networkResponse.clone());
+          // ⚠️ evita erro com responses inválidas
+          if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
             return networkResponse;
+          }
+          // Atualiza cache dinamicamente
+          const responseClone = networkResponse.clone();
+
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseClone);
           });
+          return networkResponse;
         })
         .catch(() => {
-          // fallback offline opcional
+          // fallback offline
           return caches.match('/index.html');
         });
     })
